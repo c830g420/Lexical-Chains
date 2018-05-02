@@ -1,2 +1,8 @@
+
 # Lexical-Chains
 a program that takes a text file as input and outputs the set of lexical chains in the text
+## Wordnet
+* https://wordnet.princeton.edu/
+## Python Library (Integrated NLP toolkit)
+* http://www.nltk.org/
+* [Guide book](http://www.nltk.org/book/)
