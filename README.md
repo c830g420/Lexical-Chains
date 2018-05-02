@@ -5,4 +5,5 @@ a program that takes a text file as input and outputs the set of lexical chains 
 * https://wordnet.princeton.edu/
 ## Python Library (Integrated NLP toolkit)
 * http://www.nltk.org/
+* The Natural Language Toolkit (NLTK) is a Python package for natural language processing. NLTK requires Python 2.7, 3.4, or 3.5.
 * [Guide book](http://www.nltk.org/book/)
