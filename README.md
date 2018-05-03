@@ -8,4 +8,4 @@ a program that takes a text file as input and outputs the set of lexical chains 
 * The Natural Language Toolkit (NLTK) is a Python package for natural language processing. NLTK requires Python 2.7, 3.4, or 3.5.
 * [Guide book](http://www.nltk.org/book/)
 ## Reference
-* Bird, Steven, Edward Loper and Ewan Klein (2009), Natural Language Processing with Python. O’Reilly Media Inc.
+* Bird, Steven, Edward Loper and Ewan Klein (2009), *Natural Language Processing with Python.* O’Reilly Media Inc.
