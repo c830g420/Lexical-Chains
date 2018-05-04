@@ -5,38 +5,85 @@ from nltk.corpus import wordnet as wn
 
 class LChain :
 
-	def __init__(self, startword) :
+	def __init__(self, startword, th = 0.2) :
 
 		self.ctr = Counter()
 		# self.idx = defaultdict(lambda : -1)
-		self.thre = 0.3
+		self.thre = th
 		# self.mnsim = 0
 
 		self.ctr[startword] += 1
 		self.chain = list()
 		self.chain.append(startword)
 		self.ssets = Counter()
-		self.ssets.update(wn.synsets(startword))
-		self.frq = ssets.most_common(1)[0][1]
 
+		ss = wn.synsets(startword)
+
+		self.ssets.update(ss)
+		
+		# self.sfrq = ssets.most_common(1)[0][1]
+		# self.asets = Counter()
+		# self.hypersets = Counter()
+		# self.hyposets = Counter()
+
+		# for s in ss :
+		# 	self.asets.update(s.lemmas()[0].antonyms())
+		# 	self.hypersets.
+
+		# self.hypersets = Counter()
+
+		# for s 
+
+	def isValid(self) :
+		return len(self.ssets)
+
+
+	def getSet(self) :
+
+		mc = self.ssets.most_common()
+
+		if (mc[0][1] > 1) :
+			for i in range(len(mc)) :
+				if (mc[i][1] < 2) :
+					return mc[:i]
+			return mc
+		else :
+			return mc
 
 
 	def toAdd(self, word) :
 
 		wsyn = wn.synsets(word)
-		sims = np.ones(len(wsyn))
+		# sims = np.ones(len(wsyn))
+		syn = self.getSet()
 
 
 		for i in range(len(wsyn)) :
 			if (self.ssets[wsyn[i]] > 0) :
 				return True
-			if (self.frq > 1) :
-				syn = self.ssets.most_common()
-				for s in syn :
-					if (s[1] > 1) :
-						sim = wn.path_simi
+			
+			for s, f in syn :
+				sim = s.path_similarity(wsyn[i])
+				if (sim and sim > self.thre) :
+					return True
+
+		return False
 
 
+	def toAdd_alter(self, word) :
+		
+		wsyn = wn.synsets(word)
+
+		for i in range(len(wsyn)) :
+			if (self.ssets[wsyn[i]] > 0) :
+				return True
+			
+			for s, f in self.ssets.items() :
+				sim = s.path_similarity(wsyn[i])
+				if (sim and sim > 0.1) :
+					return True
+
+		return False
 
 
 
@@ -44,9 +91,29 @@ class LChain :
 	def add(self, word) :
 
 		self.ctr[word] += 1
-		i = self.idx[word]
-		if (i > 0 and i > )
+		self.ssets.update(wn.synsets(word))
+		self.chain.append(word)
 
+
+	def add_alter(self, word) :
+
+		self.ctr[word] += 1
+		# self.ssets.update(wn.synsets(word))
+		self.chain.append(word)
+
+
+
+	def getChain(self) :
+
+		re = list()
+		tm = set()
+
+		for w in self.chain :
+			if (w not in tm) :
+				re.append('%s(%d)' % (w, self.ctr[w]))
+				tm.add(w)
+
+		return re
 
 
 
