@@ -57,17 +57,21 @@ class LChain :
 		# sims = np.ones(len(wsyn))
 		syn = self.getSet()
 
+		masim = 0
 
 		for i in range(len(wsyn)) :
 			if (self.ssets[wsyn[i]] > 0) :
-				return True
+				return 1
 			
 			for s, f in syn :
 				sim = s.path_similarity(wsyn[i])
-				if (sim and sim > self.thre) :
-					return True
+				if (sim and sim > masim) :
+					masim = sim
 
-		return False
+		if (masim > self.thre) :
+			return masim
+		else :
+			return 0
 
 
 	def toAdd_alter(self, word) :
@@ -102,6 +106,14 @@ class LChain :
 		self.chain.append(word)
 
 
+	def getLen(self) :
+
+		return len(self.chain)
+
+
+	def getWordChain(self) :
+
+		return self.chain
 
 	def getChain(self) :
 
