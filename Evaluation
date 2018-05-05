@@ -1,0 +1,145 @@
+program evaluation:
+
+take 'test3' as a test case, set similarity threshold to be 0.2.
+
+test3: 
+	'A single-engine airplane crashed Tuesday into a ditch beside a dirt road on the outskirts of Albuquerque, killing all five people aboard, authorities said.
+	Four adults and one child died in the crash, which witnesses said occurred about 5 p.m., when it was raining, Albuquerque police Sgt. R.C. Porter said.
+	The airplane was attempting to land at nearby Coronado Airport, Porter said.
+	It aborted its first attempt and was coming in for a second try when it crashed, he said…
+
+	Four adults and one child died in the crash, which witnesses said occurred about 5 p.m., when it was raining, Albuquerque police Sgt. R.C. Porter said.
+	It aborted its first attempt and was coming in for a second try when it crashed, he said'
+
+the resulting lexical chains are as follow:
+
+	'
+	Chain 0:	engine(1), authorities(1), adults(2), child(2), police(2)
+	
+	Chain 1:	airplane(2)
+
+	Chain 2:	ditch(1), dirt(1), crash(2)
+
+	Chain 3:	road(1)
+
+	Chain 4:	outskirts(1)
+
+	Chain 5:	albuquerque(1)
+
+	Chain 6:	people(1)
+
+	Chain 7:	p(2), r(2), c(2)
+
+	Chain 8:	porter(3)
+
+	Chain 9:	airport(1)
+
+	Chain 10:	attempt(2), try(2)
+	'
+
+I take three longest chain to get the core information to be the summary.
+
+the summary of the test file is as follow:
+
+	'
+	engine authorities adults child police adults child police
+
+	p r c p r c
+
+	ditch dirt crash crash
+
+	'
+
+lexical chain evaluation:
+
+	1. 	some reasonable chains are found, such as,
+			Chain 2:	ditch(1), dirt(1), crash(2);
+			Chain 10:	attempt(2), try(2)
+
+	2.	major information are extracted from the file, such as, 
+			airplane, crash ...
+
+	3. 	some chains are mostly reasonable, such as,
+			Chain 0:	engine(1), authorities(1), adults(2), child(2), police(2)
+		most word are related to the sense 'person'
+
+	4.	some corelated words are not in same chain, for example,
+			Chain 0:	authorities(1), adults(2), child(2), police(2)
+			Chain 6:	people(1)
+
+	5. 	some words seems not related to each other fitted into same chain, for example,
+			Chain 0:	engine(1), authorities(1), adults(2), child(2), police(2)
+		'engine' seems to be not related to other people-sense words.
+
+	6. 	single letters are recoginzed to be noun and fitted into chains. For example,
+			Chain 7:	p(2), r(2), c(2),
+		in which 'p' is from 'p.m.', while 'r' and 'c' are from a name
+
+	7.	names are one of the disturbing elements of this program.
+		In this test case,
+			Chain 8:	porter(3)
+		For a more disturbing case from 'The Call of the Wild, by Jack London',
+		'Buck' is probably to be regconized to be a deer or money rather than the hero dog of the novel.
+
+
+future improvements for lexical chains:
+	
+	1.	path_similarity() is not a highly reasonable method to test the similarity of words.
+			For example, the path_similarity result between 'engine' and 'child' is 0.25, 
+			which is a rather high similarity between two words
+		more similarity algorithms should be include to make the word similarity testing more reasonable
+
+	2. 	pos_tag() is not sufficent to identify the sense and meaning of a word in the context,
+		since most words has more than one meaning, and some of them are not related to the sentence.
+
+	3.	the coreference of the pronouns should be take into consideration in this program
+
+	4.	neither take the sense of new word in chain into consideration nor not is a highly reasonable approach to amplify the chain
+			if the new word is considered, the multiple meanings of the word may turn this chain into other sense.
+			if the new word is not considerd, the chains will be either too sparse (many chains, each has few words) or to condense (few chains, each has many words).
+		In this program, I choose to consider the newly added word, and take the 'most popular' sense to make the chain concentrate.
+
+	5.	Only one iteration of analysis to the words in the file is performed.
+		Like k-means method, only one iteration will not get perdect clusters.
+		If more iteration is performed, this program will be extremely time consuming for big files.
+
+
+
+evaluation for summary:
+
+	i take three longest chains to summaize the file
+
+	1.	some information of the file is extracted, such as, 
+			engine, people, crash
+
+	2.	the information 'airplane' is not extracted, because of the formation of the lexical chain
+			if the chains are more reasonable, this will be better.
+
+	3.	perhaps longer cases will have better results
+		For example, below is the result for the beginning of 'Napoleon - A Sketch of his Life, Character, Struggles, and Achievements, by: Thomas E. Watson'
+			'
+			width length reach parts pines chestnuts summits harbors century type war rush race minor dim part period language centuries war utmost feudal system castles half law lusts war races self confederation slaves freedom fought arms aid confederation d d eyes desire cases kind year ii years claim arms struggle camps years struggle resource safety word hero bastard son period death years race standard revolt count years length aid force year struggle count years contest resistance help county forces efforts place months women children walls pride bereft cause death blow girl aid steps palace law vendetta law feuds contentions assembly bank bank deposit bank fight defeat forces bank part brawl peaceful terms brawl years war rapine figure fight defeat till rivalry defiant way outlaw while revolt hopeless combat end war method resistance bank castles home share government position parts europe bank matters harsh youth adventures house loftiness energy character i regiment battle daughter bank presence prison law release delivery war hence vain sword cause command reports struggle battles contest years blow court court continent aid years round interval hero home s fury heart dagger efforts hero fight victory command war character bent waste aid ferocity encounters despair forces succession generals half strength lay inspiration spirit fought hero fear corsican fight letters ambuscade wait face eyes sword back satisfaction ringings illuminations exertions effort meeting hero son struggle years youth arms regiment refuge guard power war resources family courts vendetta fury parts condition century administration tax twelve dollars hearth power death forms proceedings tax amount amount trouble feelings alarm bells war trumpet war years body thousand battle bare battle action place orders taxes reforms sooner moment meeting government laws power revolt generals situation requisite blockade hope aid vessels supplies keen munitions struggle hopeless hour episode baron ship flag king promises description munitions war relief ships compact services zeal crown court order king situation look resorting band slaves villains wherever meantime succors evasions assurances while matters succors storm relief straw blame
+
+			corsica island sardinia tuscany island forests island corsica island moors island corsica tuscany tuscany island island corsica corsica island corsica corsica island man corsica island corsica corsica island man island man bayard men men wife man island corsica corsica hands commander island lion corsica island wife hands relatives relative hand corsica mercenaries pass island fleet soldiers mercenaries men corsica world cousins lion hand man head fall corsica commander chief corsica island man collector official man ancient neighbors man mercenaries corsica head corsica corsica island points corsica source island need men sympathizers adventurer men chiefs dignitaries island chiefs pointedness chiefs adventurer
+
+			population nations asia carthage people multitudes people people land people dominion territory people people land enemies aragon aragon allies ground people country aragon murk field people rule people people tyranny lands medici friend dominion allies medici enemy enemies country enemy field enemies foes blood people country companions followers land country agriculture tyranny land brave people people port
+
+			'
+
+
+
+future improvements for summary:
+
+	1.	imporve the lexcial chain processing algorithm
+
+	2.	take verbs, adjs and advs into consideration to get better results
+
+	3.	combine with other modern approaches, rhetorical analysis, topic signatures ...
+
+	4.	apply machine learning for more complex cases
+
+
+
+
+	
+

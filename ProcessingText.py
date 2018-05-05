@@ -35,7 +35,7 @@ class ProcessingText :
 		for w, t in self.wordList :
 
 			# take only the noun words into consideration
-			if t == 'NN' :
+			if t == 'NN' or t == 'NNS' :
 				# print(w)
 				# found = False
 

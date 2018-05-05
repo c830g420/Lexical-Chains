@@ -13,9 +13,10 @@ def main() :
 	# read file and tag the words
 	ra = ReadArticle(dirt)
 	wordlist = ra.tagging()
+	# print(wordlist)
 	
 	# process the words and get the chains
-	pt = ProcessingText(wordlist, 0.4)
+	pt = ProcessingText(wordlist)
 	pt.processing()
 	
 	# write the chains to a file
@@ -33,7 +34,7 @@ def main() :
 	for c in chs :
 		sc = ' '.join(c.getWordChain())
 		sumfl.write('%s\n\n' % sc)
-		print(sc)
+		# print(sc)
 	sumfl.close()
 
 
